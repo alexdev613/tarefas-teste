@@ -1,21 +1,62 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  FlatList
+} from 'react-native';
+
+import { FontAwesome } from '@expo/vector-icons';
+
+import Tarefa from './src/Tarefa';
 
 export default function App() {
-  const [nome, setNome] = useState("Fulano");
+  const [tarefa, setTarefa] = useState('');
 
-  function handleMudaNome() {
-    setNome("Alex Heisenberg");
+  const [list, setList] = useState([
+    {
+      key: '1',
+      item: 'Comprar pão'
+    },
+    {
+      key: '2',
+      item: 'Estudar React Native'
+    },
+    {
+      key: '3',
+      item: 'Pagar conta de luz'
+    },
+  ])
+
+  function handleAdd() {
+    alert(tarefa)
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Alex</Text>
-      <Text style={[styles.title, styles.text]}>Camarada Programador: {nome}</Text>
-      
-      <TouchableOpacity style={styles.button} onPress={handleMudaNome}>
-        <Text style={styles.buttonText}>Mudar Nome</Text>
-      </TouchableOpacity>
+      <Text style={styles.title}>Tarefas</Text>
+
+      <View style={styles.containerInput}>
+        <TextInput
+          placeholder='Digite sua tarefa...'
+          style={styles.input}
+          value={tarefa}
+          onChangeText={(text) => setTarefa(text) }
+        />
+
+        <TouchableOpacity style={styles.buttonAdd} onPress={handleAdd}>
+          <FontAwesome name="plus" size={20} color="#FFF" />
+        </TouchableOpacity>
+      </View>
+
+      <FlatList
+        data={list}
+        keyExtractor={(item) => item.key }
+        renderItem={ ({ item }) => <Tarefa data={item} /> }
+        style={styles.list}
+      />
     </View>
   )
 }
@@ -23,27 +64,45 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#343434',
+    backgroundColor: '#22272e',
     paddingTop: 28,
   },
   title: {
-    fontSize: 32,
-    color: "#f1f1f1",
     fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  text: {
-    color: "red"
-  },
-  button: {
-    backgroundColor: 'blue',
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 35,
-  },
-  buttonText: {
+    fontSize: 24,
     color: '#FFF',
-    fontWeight: 'bold'
+    marginTop: '5%',
+    paddingStart: '5%',
+    marginBottom: 12,
+  },
+  containerInput: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 22,
+  },
+  input: {
+    width: '75%',
+    backgroundColor: '#FBFBFB',
+    height: 44,
+    borderRadius: 4,
+    paddingHorizontal: 8
+  },
+  buttonAdd: {
+    width: '15%',
+    height: 44,
+    backgroundColor: '#73f7ff',
+    marginLeft: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4
+  },
+  list: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    paddingStart: '4%',
+    paddingEnd: '4%'
   }
 })
